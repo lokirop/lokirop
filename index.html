@@ -23,7 +23,7 @@
       min-height: 100vh;
     }
 
-    /* Общая сетка: на ПК две колонки рядом, на мобилке в столбик */
+    /* Расположение двух блоков на ПК */
     .page-layout {
       display: flex;
       justify-content: center;
@@ -33,7 +33,7 @@
       max-width: 960px;
     }
 
-    /* Левая колонка с кнопками */
+    /* Левая колонка со ссылками */
     .container {
       width: 100%;
       max-width: 420px;
@@ -50,7 +50,7 @@
       flex-shrink: 0;
     }
 
-    /* Шапка сайта */
+    /* Шапка сайта с фоном */
     .header-block {
       width: calc(100% + 32px);
       margin: 0 -16px 8px -16px;
@@ -136,33 +136,41 @@
       border: none;
     }
 
-    /* Правая колонка с Telegram-каналом */
+    /* Правая колонка с постами Telegram */
     .telegram-feed {
       width: 480px;
-      height: 850px;
+      max-height: 850px;
       background: rgba(0, 0, 0, 0.75);
       backdrop-filter: blur(10px);
       border-radius: 24px;
       border: 1.5px solid #ff2a2a;
-      overflow: hidden;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
       box-shadow: 0 0 15px rgba(255, 42, 42, 0.2);
       position: sticky;
       top: 30px;
     }
 
-    .telegram-feed iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
+    /* Стилизация скроллбара для Telegram */
+    .telegram-feed::-webkit-scrollbar {
+      width: 6px;
+    }
+    .telegram-feed::-webkit-scrollbar-thumb {
+      background: #ff2a2a;
+      border-radius: 10px;
+    }
+    .telegram-feed::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.3);
     }
 
-    /* На экранах планшетов и телефонов (меньше 900px) скрываем правый блок */
+    /* Скрытие правой колонки на мобилках */
     @media (max-width: 900px) {
       .telegram-feed {
         display: none;
-      }
-      .page-layout {
-        justify-content: center;
       }
     }
   </style>
@@ -170,7 +178,7 @@
 <body>
 
   <div class="page-layout">
-    <!-- Левая колонка: ваши кнопки и аватар -->
+    <!-- Левая колонка -->
     <div class="container">
       <div class="header-block">
         <img class="avatar" src="avatar.jpg" alt="Avatar">
@@ -214,15 +222,17 @@
         <span class="link-desc">Поддержать автора 💰</span>
       </a>
 
-      <!-- Встроенное видео -->
+      <!-- Видео -->
       <div class="video-wrapper">
         <iframe src="https://www.youtube.com/embed/wUotiScDaos" allowfullscreen></iframe>
       </div>
     </div>
 
-    <!-- Правая колонка: живая лента Telegram -->
+    <!-- Правая колонка: посты Telegram -->
     <div class="telegram-feed">
-      <iframe src="https://t.me/s/MORGENlokirop"></iframe>
+      <script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-post="MORGENlokirop/3" data-width="100%" data-userpic="true" data-color="E22F32" data-dark="1"></script>
+      <script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-post="MORGENlokirop/2" data-width="100%" data-userpic="true" data-color="E22F32" data-dark="1"></script>
+      <script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-post="MORGENlokirop/1" data-width="100%" data-userpic="true" data-color="E22F32" data-dark="1"></script>
     </div>
   </div>
 
