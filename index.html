@@ -84,7 +84,7 @@
       color: #ccc;
     }
 
-    /* Плеер для ПК */
+    /* Плеер только на ПК */
     .audio-player {
       display: none;
       width: 100%;
@@ -214,15 +214,16 @@
     <div class="audio-player">
       <div class="track-info">
         <span style="color:#ff2a2a;">🔥</span>
-        <span class="track-title" id="trackTitle">Нажмите ▶ для музыки</span>
+        <span class="track-title" id="trackTitle">SHOW MORGENSHTERN</span>
       </div>
       <div class="player-controls">
         <button class="player-btn" id="playBtn" title="Воспроизведение/Пауза">▶</button>
-        <button class="player-btn" id="nextBtn" title="Случайный следующий трек">⏭</button>
         <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.05" value="0.5" title="Громкость">
       </div>
     </div>
-    <audio id="audioEl" preload="auto"></audio>
+    
+    <!-- Файл трека загружается из твоего репозитория -->
+    <audio id="audioEl" src="track.mp3" preload="auto"></audio>
 
     <!-- Кнопки -->
     <a href="https://t.me/MORGENlokirop" target="_blank" class="link-card">
@@ -266,78 +267,22 @@
   </div>
 
   <script>
-    const playlist = [
-      {
-        title: "MORGENSHTERN & Элджей - Cadillac",
-        src: "https://ia801503.us.archive.org/15/items/morgenshtern-cadillac/morgenshtern-eldzhey-cadillac.mp3"
-      },
-      {
-        title: "MORGENSHTERN - ARISTOCRAT",
-        src: "https://ia801503.us.archive.org/15/items/morgenshtern-cadillac/morgenshtern-aristocrat.mp3"
-      },
-      {
-        title: "MORGENSHTERN - CRISTAL & МОЁТ",
-        src: "https://ia801503.us.archive.org/15/items/morgenshtern-cadillac/morgenshtern-cristal-moet.mp3"
-      },
-      {
-        title: "MORGENSHTERN - SHOW",
-        src: "https://ia801503.us.archive.org/15/items/morgenshtern-cadillac/morgenshtern-show.mp3"
-      },
-      {
-        title: "MORGENSHTERN - ЧЁРНЫЙ РУССКИЙ",
-        src: "https://ia801503.us.archive.org/15/items/morgenshtern-cadillac/morgenshtern-chernyj-russkij.mp3"
-      }
-    ];
-
     const audio = document.getElementById('audioEl');
     const playBtn = document.getElementById('playBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const trackTitle = document.getElementById('trackTitle');
     const volumeSlider = document.getElementById('volumeSlider');
 
-    let currentTrackIndex = -1;
     audio.volume = 0.5;
-
-    function playRandomTrack() {
-      let nextIndex;
-      do {
-        nextIndex = Math.floor(Math.random() * playlist.length);
-      } while (playlist.length > 1 && nextIndex === currentTrackIndex);
-
-      currentTrackIndex = nextIndex;
-      const track = playlist[currentTrackIndex];
-      trackTitle.textContent = "Загрузка...";
-      audio.src = track.src;
-
-      audio.play().then(() => {
-        trackTitle.textContent = track.title;
-        playBtn.textContent = '⏸';
-      }).catch((err) => {
-        console.warn("Воспроизведение заблокировано браузером до клика:", err);
-        trackTitle.textContent = track.title;
-        playBtn.textContent = '▶';
-      });
-    }
 
     playBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       if (audio.paused) {
-        if (!audio.src) {
-          playRandomTrack();
-        } else {
-          audio.play().then(() => {
-            playBtn.textContent = '⏸';
-          });
-        }
+        audio.play().then(() => {
+          playBtn.textContent = '⏸';
+        }).catch(err => console.log(err));
       } else {
         audio.pause();
         playBtn.textContent = '▶';
       }
-    });
-
-    nextBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      playRandomTrack();
     });
 
     volumeSlider.addEventListener('input', (e) => {
@@ -345,21 +290,18 @@
     });
 
     audio.addEventListener('ended', () => {
-      playRandomTrack();
+      playBtn.textContent = '▶';
     });
 
-    audio.addEventListener('error', () => {
-      console.warn("Ошибка загрузки файла, переключение на другой трек...");
-      playRandomTrack();
-    });
-
-    // Автостарт при первом клике на странице ПК
+    // Автостарт музыки при первом клике на ПК
     if (window.innerWidth >= 768) {
       let started = false;
       const startOnInteraction = () => {
         if (!started) {
           started = true;
-          playRandomTrack();
+          audio.play().then(() => {
+            playBtn.textContent = '⏸';
+          }).catch(() => {});
           document.removeEventListener('click', startOnInteraction);
         }
       };
