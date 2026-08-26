@@ -18,11 +18,22 @@
       color: #fff;
       display: flex;
       justify-content: center;
+      align-items: flex-start;
       padding: 30px 15px;
       min-height: 100vh;
     }
 
-    /* Полупрозрачная подложка для контента */
+    /* Общая сетка: на ПК две колонки рядом, на мобилке в столбик */
+    .page-layout {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 24px;
+      width: 100%;
+      max-width: 960px;
+    }
+
+    /* Левая колонка с кнопками */
     .container {
       width: 100%;
       max-width: 420px;
@@ -32,30 +43,26 @@
       gap: 16px;
       background: rgba(0, 0, 0, 0.75);
       backdrop-filter: blur(10px);
-      padding: 0 16px 24px 16px; /* Верхний отступ убран, чтобы шапка прилегала к краю */
+      padding: 0 16px 24px 16px;
       border-radius: 24px;
       border: 1px solid rgba(255, 255, 255, 0.1);
-      overflow: hidden; /* Обрезает углы фоновой картинки под контейнер */
+      overflow: hidden;
+      flex-shrink: 0;
     }
 
-    /* ============================================================ */
-    /* ВОТ ЗДЕСЬ СТАВИТСЯ ФОНОВАЯ КАРТИНКА ДЛЯ ВЕРХНЕЙ ЧАСТИ (ШАПКИ) */
-    /* Замени 'header-bg.jpg' на имя файла своей картинки          */
-    /* ============================================================ */
-   .header-block {
-  width: calc(100% + 32px);
-  margin: 0 -16px 8px -16px;
-  padding: 28px 16px 20px 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  /* Плавный переход фона в черный цвет внизу без резких границ */
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.85) 100%), url('header-bg.jpg') center/cover no-repeat;
-  border-bottom: none; /* Убирает нижнюю разделительную полосу */
-}
+    /* Шапка сайта */
+    .header-block {
+      width: calc(100% + 32px);
+      margin: 0 -16px 8px -16px;
+      padding: 28px 16px 20px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.8) 80%, rgba(0, 0, 0, 0.95) 100%), url('header-bg.jpg') center/cover no-repeat;
+      border-bottom: none;
+    }
 
-    /* Аватарка */
     .avatar {
       width: 110px;
       height: 110px;
@@ -128,57 +135,94 @@
       height: 100%;
       border: none;
     }
+
+    /* Правая колонка с Telegram-каналом */
+    .telegram-feed {
+      width: 480px;
+      height: 850px;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      border: 1.5px solid #ff2a2a;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(255, 42, 42, 0.2);
+      position: sticky;
+      top: 30px;
+    }
+
+    .telegram-feed iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* На экранах планшетов и телефонов (меньше 900px) скрываем правый блок */
+    @media (max-width: 900px) {
+      .telegram-feed {
+        display: none;
+      }
+      .page-layout {
+        justify-content: center;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <!-- Выделенная верхняя секция с собственным фоном -->
-    <div class="header-block">
-      <img class="avatar" src="avatar.jpg" alt="Avatar">
-      <h1 class="title">lokirop</h1>
-      <p class="subtitle">Мои социальные сети</p>
+  <div class="page-layout">
+    <!-- Левая колонка: ваши кнопки и аватар -->
+    <div class="container">
+      <div class="header-block">
+        <img class="avatar" src="avatar.jpg" alt="Avatar">
+        <h1 class="title">lokirop</h1>
+        <p class="subtitle">Мои социальные сети</p>
+      </div>
+
+      <!-- Кнопки -->
+      <a href="https://t.me/MORGENlokirop" target="_blank" class="link-card">
+        <span class="link-name">Telegram</span>
+        <span class="link-desc">Основной канал с новостями</span>
+      </a>
+
+      <a href="https://instagram.com/lokiropik" target="_blank" class="link-card">
+        <span class="link-name">Instagram</span>
+        <span class="link-desc">новости про моргенштерна</span>
+      </a>
+
+      <a href="https://discord.gg/rtJWEZkEp8" target="_blank" class="link-card">
+        <span class="link-name">Discord</span>
+        <span class="link-desc">привьюшки с ютуба и не только</span>
+      </a>
+
+      <a href="https://tiktok.com/@lokirophop" target="_blank" class="link-card">
+        <span class="link-name">Tik Tok</span>
+        <span class="link-desc">Короткие видео и эдиты</span>
+      </a>
+
+      <a href="https://youtube.com/@lokirop" target="_blank" class="link-card">
+        <span class="link-name">YouTube</span>
+        <span class="link-desc">ютуб канал</span>
+      </a>
+
+      <a href="https://donationalerts.com/r/lokirop" target="_blank" class="link-card">
+        <span class="link-name">DonationAlerts</span>
+        <span class="link-desc">Поддержать автора 💰</span>
+      </a>
+
+      <a href="https://dalink.to/lokirop" target="_blank" class="link-card">
+        <span class="link-name">Donation</span>
+        <span class="link-desc">Поддержать автора 💰</span>
+      </a>
+
+      <!-- Встроенное видео -->
+      <div class="video-wrapper">
+        <iframe src="https://www.youtube.com/embed/wUotiScDaos" allowfullscreen></iframe>
+      </div>
     </div>
 
-    <!-- Кнопки -->
-    <a href="https://t.me/MORGENlokirop" target="_blank" class="link-card">
-      <span class="link-name">Telegram</span>
-      <span class="link-desc">Основной канал с новостями</span>
-    </a>
-
-    <a href="https://instagram.com/lokiropik" target="_blank" class="link-card">
-      <span class="link-name">Instagram</span>
-      <span class="link-desc">новости про моргенштерна</span>
-    </a>
-
-    <a href="https://discord.gg/rtJWEZkEp8" target="_blank" class="link-card">
-      <span class="link-name">Discord</span>
-      <span class="link-desc">привьюшки с ютуба и не только</span>
-    </a>
-
-    <a href="https://tiktok.com/@lokirophop" target="_blank" class="link-card">
-      <span class="link-name">Tik Tok</span>
-      <span class="link-desc">Короткие видео и эдиты</span>
-    </a>
-
-    <a href="https://youtube.com/@lokirop" target="_blank" class="link-card">
-      <span class="link-name">YouTube</span>
-      <span class="link-desc">ютуб канал</span>
-    </a>
-
-    <a href="https://donationalerts.com/r/lokirop" target="_blank" class="link-card">
-      <span class="link-name">DonationAlerts</span>
-      <span class="link-desc">Поддержать автора 💰</span>
-    </a>
-
-    <a href="https://dalink.to/lokirop" target="_blank" class="link-card">
-      <span class="link-name">Donation</span>
-      <span class="link-desc">Поддержать автора 💰</span>
-    </a>
-
-    <!-- Встроенное видео -->
-    <div class="video-wrapper">
-      <iframe src="https://www.youtube.com/embed/wUotiScDaos" allowfullscreen></iframe>
+    <!-- Правая колонка: живая лента Telegram -->
+    <div class="telegram-feed">
+      <iframe src="https://t.me/s/MORGENlokirop"></iframe>
     </div>
   </div>
 
