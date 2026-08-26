@@ -39,7 +39,7 @@
       transition: max-width 0.3s ease;
     }
 
-    /* На экранах ПК и ноутбуков делаем карточку шире */
+    /* На экранах ПК делаем карточку шире */
     @media (min-width: 768px) {
       .container {
         max-width: 580px;
@@ -86,6 +86,84 @@
     .subtitle {
       font-size: 14px;
       color: #ccc;
+    }
+
+    /* Плеер Моргенштерна для ПК */
+    .audio-player {
+      display: none;
+      width: 100%;
+      padding: 10px 16px;
+      background: rgba(15, 15, 15, 0.85);
+      border: 1.5px solid #ff2a2a;
+      border-radius: 16px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: 0 0 12px rgba(255, 42, 42, 0.25);
+    }
+
+    @media (min-width: 768px) {
+      .audio-player {
+        display: flex;
+      }
+    }
+
+    .track-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      flex-grow: 1;
+    }
+
+    .track-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .player-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .player-btn {
+      background: none;
+      border: none;
+      color: #ff2a2a;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s ease;
+    }
+
+    .player-btn:hover {
+      transform: scale(1.2);
+    }
+
+    .volume-slider {
+      width: 75px;
+      accent-color: #ff2a2a;
+      cursor: pointer;
+    }
+
+    /* Скрытый фрейм YouTube */
+    #ytPlayerContainer {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
     }
 
     /* Кнопки соцсетей */
@@ -143,14 +221,32 @@
 <body>
 
   <div class="container">
-    <!-- Выделенная верхняя секция с собственным фоном -->
+    <!-- Шапка -->
     <div class="header-block">
       <img class="avatar" src="avatar.jpg" alt="Avatar">
       <h1 class="title">lokirop</h1>
       <p class="subtitle">Мои социальные сети</p>
     </div>
 
-    <!-- Кнопки -->
+    <!-- Кастомный плеер Моргенштерна -->
+    <div class="audio-player">
+      <div class="track-info">
+        <span style="color:#ff2a2a;">🔥</span>
+        <span class="track-title" id="trackTitle">Загрузка музыки...</span>
+      </div>
+      <div class="player-controls">
+        <button class="player-btn" id="playBtn" title="Воспроизведение/Пауза">▶</button>
+        <button class="player-btn" id="nextBtn" title="Случайный трек">⏭</button>
+        <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="50" title="Громкость">
+      </div>
+    </div>
+
+    <!-- Скрытый плеер YouTube -->
+    <div id="ytPlayerContainer">
+      <div id="yt-player"></div>
+    </div>
+
+    <!-- Кнопки соцсетей -->
     <a href="https://t.me/MORGENlokirop" target="_blank" class="link-card">
       <span class="link-name">Telegram</span>
       <span class="link-desc">Основной канал с новостями</span>
@@ -192,5 +288,115 @@
     </div>
   </div>
 
+  <!-- Скрипт официального YouTube API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script>
+    // Список треков Моргенштерна с официального YouTube/YouTube Music
+    const playlist = [
+      { id: "x30YOmbcVcA", title: "MORGENSHTERN - Cadillac" },
+      { id: "eXW7b3w_Nzg", title: "MORGENSHTERN - CRISTAL & МОЁТ" },
+      { id: "9aW5V3vU2b4", title: "MORGENSHTERN - ARISTOCRAT" },
+      { id: "rS1o8N5g4j8", title: "MORGENSHTERN - SHOW" },
+      { id: "gX21f9PZ3xU", title: "MORGENSHTERN - ЧЁРНЫЙ РУССКИЙ" },
+      { id: "wUotiScDaos", title: "MORGENSHTERN - ПОВОД" }
+    ];
+
+    let player;
+    let currentTrackIndex = -1;
+    let isReady = false;
+
+    const playBtn = document.getElementById('playBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const trackTitle = document.getElementById('trackTitle');
+    const volumeSlider = document.getElementById('volumeSlider');
+
+    function onYouTubeIframeAPIReady() {
+      const randomIndex = Math.floor(Math.random() * playlist.length);
+      currentTrackIndex = randomIndex;
+      const initialTrack = playlist[currentTrackIndex];
+
+      player = new YT.Player('yt-player', {
+        height: '1',
+        width: '1',
+        videoId: initialTrack.id,
+        playerVars: {
+          'autoplay': 0,
+          'controls': 0,
+          'disablekb': 1,
+          'fs': 0,
+          'rel': 0
+        },
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
+        }
+      });
+    }
+
+    function onPlayerReady() {
+      isReady = true;
+      player.setVolume(50);
+      trackTitle.textContent = playlist[currentTrackIndex].title;
+    }
+
+    function onPlayerStateChange(event) {
+      if (event.data === YT.PlayerState.PLAYING) {
+        playBtn.textContent = '⏸';
+      } else if (event.data === YT.PlayerState.PAUSED) {
+        playBtn.textContent = '▶';
+      } else if (event.data === YT.PlayerState.ENDED) {
+        playRandomTrack();
+      }
+    }
+
+    function playRandomTrack() {
+      if (!isReady) return;
+      let nextIndex;
+      do {
+        nextIndex = Math.floor(Math.random() * playlist.length);
+      } while (playlist.length > 1 && nextIndex === currentTrackIndex);
+
+      currentTrackIndex = nextIndex;
+      const track = playlist[currentTrackIndex];
+      trackTitle.textContent = track.title;
+      player.loadVideoById(track.id);
+      player.playVideo();
+    }
+
+    playBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!isReady) return;
+      const state = player.getPlayerState();
+      if (state === YT.PlayerState.PLAYING) {
+        player.pauseVideo();
+      } else {
+        player.playVideo();
+      }
+    });
+
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      playRandomTrack();
+    });
+
+    volumeSlider.addEventListener('input', (e) => {
+      if (isReady) {
+        player.setVolume(e.target.value);
+      }
+    });
+
+    // Автостарт воспроизведения при первом клике на ПК
+    if (window.innerWidth >= 768) {
+      let started = false;
+      const startOnFirstClick = () => {
+        if (!started && isReady) {
+          started = true;
+          player.playVideo();
+          document.removeEventListener('click', startOnFirstClick);
+        }
+      };
+      document.addEventListener('click', startOnFirstClick);
+    }
+  </script>
 </body>
 </html>
