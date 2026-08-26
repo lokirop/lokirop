@@ -214,7 +214,7 @@
     <div class="audio-player">
       <div class="track-info">
         <span style="color:#ff2a2a;">🔥</span>
-        <span class="track-title" id="trackTitle">Нажмите ▶ для старта</span>
+        <span class="track-title" id="trackTitle">Нажмите ▶ для музыки</span>
       </div>
       <div class="player-controls">
         <button class="player-btn" id="playBtn" title="Воспроизведение/Пауза">▶</button>
@@ -222,7 +222,7 @@
         <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.05" value="0.5" title="Громкость">
       </div>
     </div>
-    <audio id="audioEl" preload="auto" crossorigin="anonymous"></audio>
+    <audio id="audioEl" preload="auto"></audio>
 
     <!-- Кнопки -->
     <a href="https://t.me/MORGENlokirop" target="_blank" class="link-card">
@@ -266,39 +266,26 @@
   </div>
 
   <script>
-    // Плейлист треков Моргенштерна
     const playlist = [
       {
         title: "MORGENSHTERN & Элджей - Cadillac",
-        src: "https://music.mp3bob.ru/download/12396/morgenshtern-eldzhey-cadillac.mp3"
+        src: "https://ia801503.us.archive.org/15/items/morgenshtern-cadillac/morgenshtern-eldzhey-cadillac.mp3"
       },
       {
         title: "MORGENSHTERN - ARISTOCRAT",
-        src: "https://music.mp3bob.ru/download/23471/morgenshtern-aristocrat.mp3"
+        src: "https://ia801503.us.archive.org/15/items/morgenshtern-cadillac/morgenshtern-aristocrat.mp3"
       },
       {
         title: "MORGENSHTERN - CRISTAL & МОЁТ",
-        src: "https://music.mp3bob.ru/download/16723/morgenshtern-cristal-moet.mp3"
+        src: "https://ia801503.us.archive.org/15/items/morgenshtern-cadillac/morgenshtern-cristal-moet.mp3"
       },
       {
         title: "MORGENSHTERN - SHOW",
-        src: "https://music.mp3bob.ru/download/23469/morgenshtern-show.mp3"
+        src: "https://ia801503.us.archive.org/15/items/morgenshtern-cadillac/morgenshtern-show.mp3"
       },
       {
         title: "MORGENSHTERN - ЧЁРНЫЙ РУССКИЙ",
-        src: "https://music.mp3bob.ru/download/46380/morgenshtern-chernyj-russkij.mp3"
-      },
-      {
-        title: "MORGENSHTERN - ДУЛО",
-        src: "https://music.mp3bob.ru/download/23246/morgenshtern-dulo.mp3"
-      },
-      {
-        title: "MORGENSHTERN - DINERO",
-        src: "https://music.mp3bob.ru/download/23475/morgenshtern-dinero.mp3"
-      },
-      {
-        title: "MORGENSHTERN - OLALA",
-        src: "https://music.mp3bob.ru/download/23474/morgenshtern-olala.mp3"
+        src: "https://ia801503.us.archive.org/15/items/morgenshtern-cadillac/morgenshtern-chernyj-russkij.mp3"
       }
     ];
 
@@ -319,11 +306,15 @@
 
       currentTrackIndex = nextIndex;
       const track = playlist[currentTrackIndex];
+      trackTitle.textContent = "Загрузка...";
       audio.src = track.src;
-      trackTitle.textContent = track.title;
+
       audio.play().then(() => {
+        trackTitle.textContent = track.title;
         playBtn.textContent = '⏸';
-      }).catch(() => {
+      }).catch((err) => {
+        console.warn("Воспроизведение заблокировано браузером до клика:", err);
+        trackTitle.textContent = track.title;
         playBtn.textContent = '▶';
       });
     }
@@ -334,8 +325,9 @@
         if (!audio.src) {
           playRandomTrack();
         } else {
-          audio.play();
-          playBtn.textContent = '⏸';
+          audio.play().then(() => {
+            playBtn.textContent = '⏸';
+          });
         }
       } else {
         audio.pause();
@@ -356,7 +348,12 @@
       playRandomTrack();
     });
 
-    // Автовоспроизведение первого случайного трека при клике на странице ПК
+    audio.addEventListener('error', () => {
+      console.warn("Ошибка загрузки файла, переключение на другой трек...");
+      playRandomTrack();
+    });
+
+    // Автостарт при первом клике на странице ПК
     if (window.innerWidth >= 768) {
       let started = false;
       const startOnInteraction = () => {
