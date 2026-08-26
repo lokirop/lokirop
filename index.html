@@ -22,7 +22,7 @@
       min-height: 100vh;
     }
 
-    /* Полупрозрачная подложка для контента */
+    /* Полупрозрачная подложка для контента (по умолчанию для телефонов) */
     .container {
       width: 100%;
       max-width: 420px;
@@ -32,28 +32,38 @@
       gap: 16px;
       background: rgba(0, 0, 0, 0.75);
       backdrop-filter: blur(10px);
-      padding: 0 16px 24px 16px; /* Верхний отступ убран, чтобы шапка прилегала к краю */
+      padding: 0 16px 24px 16px;
       border-radius: 24px;
       border: 1px solid rgba(255, 255, 255, 0.1);
-      overflow: hidden; /* Обрезает углы фоновой картинки под контейнер */
+      overflow: hidden;
+      transition: max-width 0.3s ease;
     }
 
-    /* ============================================================ */
-    /* ВОТ ЗДЕСЬ СТАВИТСЯ ФОНОВАЯ КАРТИНКА ДЛЯ ВЕРХНЕЙ ЧАСТИ (ШАПКИ) */
-    /* Замени 'header-bg.jpg' на имя файла своей картинки          */
-    /* ============================================================ */
-   .header-block {
-  width: calc(100% + 32px);
-  margin: 0 -16px 8px -16px;
-  padding: 28px 16px 20px 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  /* Плавный переход фона в черный цвет внизу без резких границ */
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.85) 100%), url('header-bg.jpg') center/cover no-repeat;
-  border-bottom: none; /* Убирает нижнюю разделительную полосу */
-}
+    /* На экранах ПК и ноутбуков делаем карточку шире */
+    @media (min-width: 768px) {
+      .container {
+        max-width: 580px;
+        padding: 0 24px 28px 24px;
+      }
+      .header-block {
+        width: calc(100% + 48px) !important;
+        margin: 0 -24px 12px -24px !important;
+        padding: 32px 24px 24px 24px !important;
+      }
+    }
+
+    /* Верхняя секция (шапка) */
+    .header-block {
+      width: calc(100% + 32px);
+      margin: 0 -16px 8px -16px;
+      padding: 28px 16px 20px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.85) 100%), url('header-bg.jpg') center/cover no-repeat;
+      border-bottom: none;
+    }
 
     /* Аватарка */
     .avatar {
