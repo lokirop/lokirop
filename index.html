@@ -32,9 +32,26 @@
       gap: 16px;
       background: rgba(0, 0, 0, 0.75);
       backdrop-filter: blur(10px);
-      padding: 24px 16px;
+      padding: 0 16px 24px 16px; /* Верхний отступ убран, чтобы шапка прилегала к краю */
       border-radius: 24px;
       border: 1px solid rgba(255, 255, 255, 0.1);
+      overflow: hidden; /* Обрезает углы фоновой картинки под контейнер */
+    }
+
+    /* ============================================================ */
+    /* ВОТ ЗДЕСЬ СТАВИТСЯ ФОНОВАЯ КАРТИНКА ДЛЯ ВЕРХНЕЙ ЧАСТИ (ШАПКИ) */
+    /* Замени 'header-bg.jpg' на имя файла своей картинки          */
+    /* ============================================================ */
+    .header-block {
+      width: calc(100% + 32px); /* Растягивает блок на всю ширину контейнера */
+      margin: 0 -16px 8px -16px;
+      padding: 28px 16px 20px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7)), url('header-bg.jpg') center/cover no-repeat;
+      border-bottom: 1px solid rgba(255, 42, 42, 0.3);
     }
 
     /* Аватарка */
@@ -57,8 +74,7 @@
 
     .subtitle {
       font-size: 14px;
-      color: #aaa;
-      margin-top: -10px;
+      color: #ccc;
     }
 
     /* Кнопки соцсетей */
@@ -116,11 +132,12 @@
 <body>
 
   <div class="container">
-    <!-- Твоя аватарка -->
-    <img class="avatar" src="avatar.jpg" alt="Avatar">
-    
-    <h1 class="title">lokirop</h1>
-    <p class="subtitle">Мои социальные сети</p>
+    <!-- Выделенная верхняя секция с собственным фоном -->
+    <div class="header-block">
+      <img class="avatar" src="avatar.jpg" alt="Avatar">
+      <h1 class="title">lokirop</h1>
+      <p class="subtitle">Мои социальные сети</p>
+    </div>
 
     <!-- Кнопки -->
     <a href="https://t.me/MORGENlokirop" target="_blank" class="link-card">
@@ -158,7 +175,7 @@
       <span class="link-desc">Поддержать автора 💰</span>
     </a>
 
-    <!-- Встроенное видео (замени ID видео в ссылке) -->
+    <!-- Встроенное видео -->
     <div class="video-wrapper">
       <iframe src="https://www.youtube.com/embed/wUotiScDaos" allowfullscreen></iframe>
     </div>
