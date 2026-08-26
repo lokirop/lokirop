@@ -136,35 +136,24 @@
       border: none;
     }
 
-    /* Правая колонка с постами Telegram */
+    /* Правая колонка с веб-лентой Telegram */
     .telegram-feed {
-      width: 480px;
-      max-height: 850px;
+      width: 500px;
+      height: 850px;
       background: rgba(0, 0, 0, 0.75);
       backdrop-filter: blur(10px);
       border-radius: 24px;
       border: 1.5px solid #ff2a2a;
-      overflow-y: auto;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
+      overflow: hidden;
       box-shadow: 0 0 15px rgba(255, 42, 42, 0.2);
       position: sticky;
       top: 30px;
     }
 
-    /* Стилизация скроллбара для Telegram */
-    .telegram-feed::-webkit-scrollbar {
-      width: 6px;
-    }
-    .telegram-feed::-webkit-scrollbar-thumb {
-      background: #ff2a2a;
-      border-radius: 10px;
-    }
-    .telegram-feed::-webkit-scrollbar-track {
-      background: rgba(0, 0, 0, 0.3);
+    .telegram-feed iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
     }
 
     /* Скрытие правой колонки на мобилках */
@@ -228,11 +217,12 @@
       </div>
     </div>
 
-    <!-- Правая колонка: посты Telegram -->
+    <!-- Правая колонка: бесконечная лента Telegram -->
     <div class="telegram-feed">
-      <script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-post="MORGENlokirop/1898" data-width="100%" data-userpic="true" data-color="E22F32" data-dark="1"></script>
-      <script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-post="MORGENlokirop/1897" data-width="100%" data-userpic="true" data-color="E22F32" data-dark="1"></script>
-      <script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-post="MORGENlokirop/1896" data-width="100%" data-userpic="true" data-color="E22F32" data-dark="1"></script>
+      <iframe src="https://tg.i-c-a.su/s/MORGENlokirop" 
+              loading="lazy" 
+              title="Telegram Feed">
+      </iframe>
     </div>
   </div>
 
