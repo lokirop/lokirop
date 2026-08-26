@@ -210,7 +210,7 @@
       <p class="subtitle">Мои социальные сети</p>
     </div>
 
-    <!-- Аудиоплеер -->
+    <!-- Аудиоплеер для ПК -->
     <div class="audio-player">
       <div class="track-info">
         <span style="color:#ff2a2a;">🔥</span>
@@ -222,7 +222,7 @@
         <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.05" value="0.5" title="Громкость">
       </div>
     </div>
-    <audio id="audioEl" preload="auto"></audio>
+    <audio id="audioEl" preload="auto" crossorigin="anonymous"></audio>
 
     <!-- Кнопки -->
     <a href="https://t.me/MORGENlokirop" target="_blank" class="link-card">
@@ -266,26 +266,39 @@
   </div>
 
   <script>
+    // Плейлист треков Моргенштерна
     const playlist = [
       {
-        title: "MORGENSHTERN - Cadillac",
-        src: "https://dl.muz-pulse.cc/files/morgenshtern-eldzhey-cadillac.mp3"
+        title: "MORGENSHTERN & Элджей - Cadillac",
+        src: "https://music.mp3bob.ru/download/12396/morgenshtern-eldzhey-cadillac.mp3"
       },
       {
         title: "MORGENSHTERN - ARISTOCRAT",
-        src: "https://dl.muz-pulse.cc/files/morgenshtern-aristocrat.mp3"
+        src: "https://music.mp3bob.ru/download/23471/morgenshtern-aristocrat.mp3"
       },
       {
         title: "MORGENSHTERN - CRISTAL & МОЁТ",
-        src: "https://dl.muz-pulse.cc/files/morgenshtern-cristal-moet.mp3"
+        src: "https://music.mp3bob.ru/download/16723/morgenshtern-cristal-moet.mp3"
       },
       {
         title: "MORGENSHTERN - SHOW",
-        src: "https://dl.muz-pulse.cc/files/morgenshtern-show.mp3"
+        src: "https://music.mp3bob.ru/download/23469/morgenshtern-show.mp3"
       },
       {
         title: "MORGENSHTERN - ЧЁРНЫЙ РУССКИЙ",
-        src: "https://dl.muz-pulse.cc/files/morgenshtern-chernyj-russkij.mp3"
+        src: "https://music.mp3bob.ru/download/46380/morgenshtern-chernyj-russkij.mp3"
+      },
+      {
+        title: "MORGENSHTERN - ДУЛО",
+        src: "https://music.mp3bob.ru/download/23246/morgenshtern-dulo.mp3"
+      },
+      {
+        title: "MORGENSHTERN - DINERO",
+        src: "https://music.mp3bob.ru/download/23475/morgenshtern-dinero.mp3"
+      },
+      {
+        title: "MORGENSHTERN - OLALA",
+        src: "https://music.mp3bob.ru/download/23474/morgenshtern-olala.mp3"
       }
     ];
 
@@ -343,7 +356,7 @@
       playRandomTrack();
     });
 
-    // Автовоспроизведение первого случайного трека при клике в любом месте страницы (на ПК)
+    // Автовоспроизведение первого случайного трека при клике на странице ПК
     if (window.innerWidth >= 768) {
       let started = false;
       const startOnInteraction = () => {
