@@ -22,7 +22,6 @@
       min-height: 100vh;
     }
 
-    /* Полупрозрачная подложка для контента (по умолчанию для телефонов) */
     .container {
       width: 100%;
       max-width: 420px;
@@ -39,7 +38,6 @@
       transition: max-width 0.3s ease;
     }
 
-    /* На экранах ПК делаем карточку шире */
     @media (min-width: 768px) {
       .container {
         max-width: 580px;
@@ -52,7 +50,6 @@
       }
     }
 
-    /* Верхняя секция (шапка) */
     .header-block {
       width: calc(100% + 32px);
       margin: 0 -16px 8px -16px;
@@ -65,7 +62,6 @@
       border-bottom: none;
     }
 
-    /* Аватарка */
     .avatar {
       width: 110px;
       height: 110px;
@@ -88,7 +84,7 @@
       color: #ccc;
     }
 
-    /* Плеер Моргенштерна для ПК */
+    /* Плеер для ПК */
     .audio-player {
       display: none;
       width: 100%;
@@ -138,7 +134,7 @@
       border: none;
       color: #ff2a2a;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 18px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -155,18 +151,6 @@
       cursor: pointer;
     }
 
-    /* Скрытый фрейм YouTube */
-    #ytPlayerContainer {
-      position: absolute;
-      top: -9999px;
-      left: -9999px;
-      width: 1px;
-      height: 1px;
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    /* Кнопки соцсетей */
     .link-card {
       width: 100%;
       padding: 14px 18px;
@@ -201,7 +185,6 @@
       margin-top: 3px;
     }
 
-    /* Блок с видео */
     .video-wrapper {
       width: 100%;
       aspect-ratio: 16 / 9;
@@ -221,32 +204,27 @@
 <body>
 
   <div class="container">
-    <!-- Шапка -->
     <div class="header-block">
       <img class="avatar" src="avatar.jpg" alt="Avatar">
       <h1 class="title">lokirop</h1>
       <p class="subtitle">Мои социальные сети</p>
     </div>
 
-    <!-- Кастомный плеер Моргенштерна -->
+    <!-- Аудиоплеер -->
     <div class="audio-player">
       <div class="track-info">
         <span style="color:#ff2a2a;">🔥</span>
-        <span class="track-title" id="trackTitle">Загрузка музыки...</span>
+        <span class="track-title" id="trackTitle">Нажмите ▶ для старта</span>
       </div>
       <div class="player-controls">
         <button class="player-btn" id="playBtn" title="Воспроизведение/Пауза">▶</button>
-        <button class="player-btn" id="nextBtn" title="Случайный трек">⏭</button>
-        <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="50" title="Громкость">
+        <button class="player-btn" id="nextBtn" title="Случайный следующий трек">⏭</button>
+        <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.05" value="0.5" title="Громкость">
       </div>
     </div>
+    <audio id="audioEl" preload="auto"></audio>
 
-    <!-- Скрытый плеер YouTube -->
-    <div id="ytPlayerContainer">
-      <div id="yt-player"></div>
-    </div>
-
-    <!-- Кнопки соцсетей -->
+    <!-- Кнопки -->
     <a href="https://t.me/MORGENlokirop" target="_blank" class="link-card">
       <span class="link-name">Telegram</span>
       <span class="link-desc">Основной канал с новостями</span>
@@ -282,75 +260,45 @@
       <span class="link-desc">Поддержать автора 💰</span>
     </a>
 
-    <!-- Встроенное видео -->
     <div class="video-wrapper">
       <iframe src="https://www.youtube.com/embed/wUotiScDaos" allowfullscreen></iframe>
     </div>
   </div>
 
-  <!-- Скрипт официального YouTube API -->
-  <script src="https://www.youtube.com/iframe_api"></script>
   <script>
-    // Список треков Моргенштерна с официального YouTube/YouTube Music
     const playlist = [
-      { id: "x30YOmbcVcA", title: "MORGENSHTERN - Cadillac" },
-      { id: "eXW7b3w_Nzg", title: "MORGENSHTERN - CRISTAL & МОЁТ" },
-      { id: "9aW5V3vU2b4", title: "MORGENSHTERN - ARISTOCRAT" },
-      { id: "rS1o8N5g4j8", title: "MORGENSHTERN - SHOW" },
-      { id: "gX21f9PZ3xU", title: "MORGENSHTERN - ЧЁРНЫЙ РУССКИЙ" },
-      { id: "wUotiScDaos", title: "MORGENSHTERN - ПОВОД" }
+      {
+        title: "MORGENSHTERN - Cadillac",
+        src: "https://dl.muz-pulse.cc/files/morgenshtern-eldzhey-cadillac.mp3"
+      },
+      {
+        title: "MORGENSHTERN - ARISTOCRAT",
+        src: "https://dl.muz-pulse.cc/files/morgenshtern-aristocrat.mp3"
+      },
+      {
+        title: "MORGENSHTERN - CRISTAL & МОЁТ",
+        src: "https://dl.muz-pulse.cc/files/morgenshtern-cristal-moet.mp3"
+      },
+      {
+        title: "MORGENSHTERN - SHOW",
+        src: "https://dl.muz-pulse.cc/files/morgenshtern-show.mp3"
+      },
+      {
+        title: "MORGENSHTERN - ЧЁРНЫЙ РУССКИЙ",
+        src: "https://dl.muz-pulse.cc/files/morgenshtern-chernyj-russkij.mp3"
+      }
     ];
 
-    let player;
-    let currentTrackIndex = -1;
-    let isReady = false;
-
+    const audio = document.getElementById('audioEl');
     const playBtn = document.getElementById('playBtn');
     const nextBtn = document.getElementById('nextBtn');
     const trackTitle = document.getElementById('trackTitle');
     const volumeSlider = document.getElementById('volumeSlider');
 
-    function onYouTubeIframeAPIReady() {
-      const randomIndex = Math.floor(Math.random() * playlist.length);
-      currentTrackIndex = randomIndex;
-      const initialTrack = playlist[currentTrackIndex];
-
-      player = new YT.Player('yt-player', {
-        height: '1',
-        width: '1',
-        videoId: initialTrack.id,
-        playerVars: {
-          'autoplay': 0,
-          'controls': 0,
-          'disablekb': 1,
-          'fs': 0,
-          'rel': 0
-        },
-        events: {
-          'onReady': onPlayerReady,
-          'onStateChange': onPlayerStateChange
-        }
-      });
-    }
-
-    function onPlayerReady() {
-      isReady = true;
-      player.setVolume(50);
-      trackTitle.textContent = playlist[currentTrackIndex].title;
-    }
-
-    function onPlayerStateChange(event) {
-      if (event.data === YT.PlayerState.PLAYING) {
-        playBtn.textContent = '⏸';
-      } else if (event.data === YT.PlayerState.PAUSED) {
-        playBtn.textContent = '▶';
-      } else if (event.data === YT.PlayerState.ENDED) {
-        playRandomTrack();
-      }
-    }
+    let currentTrackIndex = -1;
+    audio.volume = 0.5;
 
     function playRandomTrack() {
-      if (!isReady) return;
       let nextIndex;
       do {
         nextIndex = Math.floor(Math.random() * playlist.length);
@@ -358,19 +306,27 @@
 
       currentTrackIndex = nextIndex;
       const track = playlist[currentTrackIndex];
+      audio.src = track.src;
       trackTitle.textContent = track.title;
-      player.loadVideoById(track.id);
-      player.playVideo();
+      audio.play().then(() => {
+        playBtn.textContent = '⏸';
+      }).catch(() => {
+        playBtn.textContent = '▶';
+      });
     }
 
     playBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      if (!isReady) return;
-      const state = player.getPlayerState();
-      if (state === YT.PlayerState.PLAYING) {
-        player.pauseVideo();
+      if (audio.paused) {
+        if (!audio.src) {
+          playRandomTrack();
+        } else {
+          audio.play();
+          playBtn.textContent = '⏸';
+        }
       } else {
-        player.playVideo();
+        audio.pause();
+        playBtn.textContent = '▶';
       }
     });
 
@@ -380,22 +336,24 @@
     });
 
     volumeSlider.addEventListener('input', (e) => {
-      if (isReady) {
-        player.setVolume(e.target.value);
-      }
+      audio.volume = e.target.value;
     });
 
-    // Автостарт воспроизведения при первом клике на ПК
+    audio.addEventListener('ended', () => {
+      playRandomTrack();
+    });
+
+    // Автовоспроизведение первого случайного трека при клике в любом месте страницы (на ПК)
     if (window.innerWidth >= 768) {
       let started = false;
-      const startOnFirstClick = () => {
-        if (!started && isReady) {
+      const startOnInteraction = () => {
+        if (!started) {
           started = true;
-          player.playVideo();
-          document.removeEventListener('click', startOnFirstClick);
+          playRandomTrack();
+          document.removeEventListener('click', startOnInteraction);
         }
       };
-      document.addEventListener('click', startOnFirstClick);
+      document.addEventListener('click', startOnInteraction);
     }
   </script>
 </body>
