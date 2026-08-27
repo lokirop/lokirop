@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Мои соцсети</title>
   <link rel="icon" href="avatar.jpg">
+  <!-- Иконки Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
     * {
       box-sizing: border-box;
@@ -84,7 +86,7 @@
       color: #ccc;
     }
 
-    /* Плеер только на ПК */
+    /* Плеер для ПК */
     .audio-player {
       display: none;
       width: 100%;
@@ -151,14 +153,17 @@
       cursor: pointer;
     }
 
+    /* Кнопки соцсетей */
     .link-card {
       width: 100%;
-      padding: 14px 18px;
+      padding: 12px 18px;
       background: rgba(20, 20, 20, 0.7);
       border: 1.5px solid #ff2a2a;
       border-radius: 18px;
-      text-align: center;
       text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       transition: all 0.25s ease;
       box-shadow: 0 0 8px rgba(255, 42, 42, 0.15);
     }
@@ -169,8 +174,24 @@
       box-shadow: 0 0 15px rgba(255, 42, 42, 0.4);
     }
 
+    .link-icon {
+      font-size: 22px;
+      color: #ff2a2a;
+      width: 30px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .link-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      flex-grow: 1;
+      padding: 0 10px;
+    }
+
     .link-name {
-      display: block;
       color: #ff2a2a;
       font-weight: 800;
       font-size: 15px;
@@ -179,10 +200,9 @@
     }
 
     .link-desc {
-      display: block;
       color: #e5e5e5;
       font-size: 12px;
-      margin-top: 3px;
+      margin-top: 2px;
     }
 
     .video-wrapper {
@@ -222,43 +242,70 @@
       </div>
     </div>
     
-    <!-- Файл трека загружается из твоего репозитория -->
     <audio id="audioEl" src="track.mp3" preload="auto"></audio>
 
-    <!-- Кнопки -->
+    <!-- Кнопки с иконками соцсетей -->
     <a href="https://t.me/MORGENlokirop" target="_blank" class="link-card">
-      <span class="link-name">Telegram</span>
-      <span class="link-desc">Основной канал с новостями</span>
+      <i class="fa-brands fa-telegram link-icon"></i>
+      <div class="link-content">
+        <span class="link-name">Telegram</span>
+        <span class="link-desc">Основной канал с новостями</span>
+      </div>
+      <i class="fa-brands fa-telegram link-icon"></i>
     </a>
 
     <a href="https://instagram.com/lokiropik" target="_blank" class="link-card">
-      <span class="link-name">Instagram</span>
-      <span class="link-desc">Новости про моргенштерна</span>
+      <i class="fa-brands fa-instagram link-icon"></i>
+      <div class="link-content">
+        <span class="link-name">Instagram</span>
+        <span class="link-desc">Новости про моргенштерна</span>
+      </div>
+      <i class="fa-brands fa-instagram link-icon"></i>
     </a>
 
     <a href="https://discord.gg/rtJWEZkEp8" target="_blank" class="link-card">
-      <span class="link-name">Discord</span>
-      <span class="link-desc">Превьюшки с ютуба и не только</span>
+      <i class="fa-brands fa-discord link-icon"></i>
+      <div class="link-content">
+        <span class="link-name">Discord</span>
+        <span class="link-desc">Превьюшки с ютуба и не только</span>
+      </div>
+      <i class="fa-brands fa-discord link-icon"></i>
     </a>
 
     <a href="https://tiktok.com/@lokirophop" target="_blank" class="link-card">
-      <span class="link-name">Tik Tok</span>
-      <span class="link-desc">Короткие видео и эдиты</span>
+      <i class="fa-brands fa-tiktok link-icon"></i>
+      <div class="link-content">
+        <span class="link-name">Tik Tok</span>
+        <span class="link-desc">Короткие видео и эдиты</span>
+      </div>
+      <i class="fa-brands fa-tiktok link-icon"></i>
     </a>
 
     <a href="https://youtube.com/@lokirop" target="_blank" class="link-card">
-      <span class="link-name">YouTube</span>
-      <span class="link-desc">Ютуб канал</span>
+      <i class="fa-brands fa-youtube link-icon"></i>
+      <div class="link-content">
+        <span class="link-name">YouTube</span>
+        <span class="link-desc">Ютуб канал</span>
+      </div>
+      <i class="fa-brands fa-youtube link-icon"></i>
     </a>
 
     <a href="https://donationalerts.com/r/lokirop" target="_blank" class="link-card">
-      <span class="link-name">DonationAlerts</span>
-      <span class="link-desc">Поддержать автора 💰</span>
+      <i class="fa-solid fa-hand-holding-dollar link-icon"></i>
+      <div class="link-content">
+        <span class="link-name">DonationAlerts</span>
+        <span class="link-desc">Поддержать автора 💰</span>
+      </div>
+      <i class="fa-solid fa-hand-holding-dollar link-icon"></i>
     </a>
 
     <a href="https://dalink.to/lokirop" target="_blank" class="link-card">
-      <span class="link-name">Donation</span>
-      <span class="link-desc">Поддержать автора 💰</span>
+      <i class="fa-solid fa-coins link-icon"></i>
+      <div class="link-content">
+        <span class="link-name">Donation</span>
+        <span class="link-desc">Поддержать автора 💰</span>
+      </div>
+      <i class="fa-solid fa-coins link-icon"></i>
     </a>
 
     <div class="video-wrapper">
@@ -293,7 +340,6 @@
       playBtn.textContent = '▶';
     });
 
-    // Автостарт музыки при первом клике на ПК
     if (window.innerWidth >= 768) {
       let started = false;
       const startOnInteraction = () => {
