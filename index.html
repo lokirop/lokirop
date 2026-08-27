@@ -20,6 +20,19 @@
       justify-content: center;
       padding: 30px 15px;
       min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Фоновый холст для анимации 666 */
+    #matrixCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
     }
 
     .container {
@@ -36,6 +49,8 @@
       border: 1px solid rgba(255, 255, 255, 0.1);
       overflow: hidden;
       transition: max-width 0.3s ease;
+      position: relative;
+      z-index: 1;
     }
 
     @media (min-width: 768px) {
@@ -203,6 +218,9 @@
 </head>
 <body>
 
+  <!-- Холст фоновой анимации 666 -->
+  <canvas id="matrixCanvas"></canvas>
+
   <div class="container">
     <div class="header-block">
       <img class="avatar" src="avatar.jpg" alt="Avatar">
@@ -222,7 +240,6 @@
       </div>
     </div>
     
-    <!-- Файл трека загружается из твоего репозитория -->
     <audio id="audioEl" src="track.mp3" preload="auto"></audio>
 
     <!-- Кнопки -->
@@ -267,6 +284,65 @@
   </div>
 
   <script>
+    /* Анимация хаотичного падения 666 (без свечения) */
+    const canvas = document.getElementById('matrixCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let particles = [];
+    const particleCount = 55;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Number666 {
+      constructor() {
+        this.reset(true);
+      }
+
+      reset(initial = false) {
+        this.x = Math.random() * canvas.width;
+        this.y = initial ? Math.random() * canvas.height : -30;
+        this.speed = 1.2 + Math.random() * 2.8;
+        this.fontSize = 13 + Math.floor(Math.random() * 16);
+        this.opacity = 0.15 + Math.random() * 0.65;
+        this.drift = (Math.random() - 0.5) * 0.6;
+      }
+
+      update() {
+        this.y += this.speed;
+        this.x += this.drift;
+
+        if (this.y > canvas.height + 30) {
+          this.reset(false);
+        }
+      }
+
+      draw() {
+        ctx.font = `900 ${this.fontSize}px sans-serif`;
+        ctx.fillStyle = `rgba(255, 42, 42, ${this.opacity})`;
+        ctx.fillText('666', this.x, this.y);
+      }
+    }
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Number666());
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let p of particles) {
+        p.update();
+        p.draw();
+      }
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    /* Логика плеера */
     const audio = document.getElementById('audioEl');
     const playBtn = document.getElementById('playBtn');
     const volumeSlider = document.getElementById('volumeSlider');
@@ -293,7 +369,6 @@
       playBtn.textContent = '▶';
     });
 
-    // Автостарт музыки при первом клике на ПК
     if (window.innerWidth >= 768) {
       let started = false;
       const startOnInteraction = () => {
